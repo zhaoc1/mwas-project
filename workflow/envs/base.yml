@@ -1,0 +1,10 @@
+name: qc-base
+channels:
+  - bioconda
+  - conda-forge
+  - agbiome
+dependencies:
+  - snakemake=7.32.0
+  - biopython=1.81
+  - trimmomatic=0.39
+  - bbtools=37.62

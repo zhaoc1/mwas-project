@@ -1,0 +1,3 @@
+sample	input	both_kept	fwd_only	rev_only	dropped	low_entropy	hs37d5ss	phix	host	non_host
+SRR6468502	16507406	15816683	365388	204249	121086	277	85238	0	85238	15731445
+sample	15518902	15518902	0	0	0	9	0	0	0	15518902

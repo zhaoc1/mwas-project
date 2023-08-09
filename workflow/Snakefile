@@ -20,9 +20,7 @@ wildcard_constraints:
     sample="[^/]+"
 
 # Setting up config files and samples
-print(config)
 Cfg = validate_config(config)
-print(Cfg)
 Samples = load_sample_list(
             Cfg['all']['samplelist_fp'],
             Cfg['all']['paired_end'],

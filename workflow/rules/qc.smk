@@ -7,7 +7,7 @@ import pandas
 
 # Quality-control reads
 TARGET_CLEAN = expand(
-    str(QC_FP/'02_bbduk'/'{sample}_{rp}.fastq.gz'),
+    str(QC_FP/'01_trimmomatic'/'{sample}_{rp}.fastq.gz'),
     sample = Samples.keys(), rp = Pairs)
 
 
@@ -54,14 +54,15 @@ rule trimmomatic_paired:
         pair_r2 = str(QC_FP/'01_trimmomatic'/'{sample}_2.fastq.gz'),
         unpair_r1 = temp(str(QC_FP/'01_trimmomatic'/'unpaired'/'{sample}_1_unpaired.fastq.gz')),
         unpair_r2 = temp(str(QC_FP/'01_trimmomatic'/'unpaired'/'{sample}_2_unpaired.fastq.gz'))
-    conda:
-        "../envs/bbtools.yml"
     log:
         str(QC_FP/'log'/'trimmomatic'/'{sample}.out'),
     params:
         adapter = CONDA_PATH / f"share/trimmomatic-0.39-2/adapters/{ADAPTER_FASTA}",
         jar = str(CONDA_PATH/'share/trimmomatic-0.39-2/trimmomatic.jar')
     threads: 8
+    resources:
+        mem_gb=4,
+        walltime_hr=2
     shell:
         """
         java -Xmx1028m -jar {params.jar} \
@@ -82,6 +83,8 @@ rule entropy_filter_unpaired:
         r1 = str(QC_FP/'02_bbduk'/'{sample}_1.fastq.gz'),
     log:
         str(QC_FP/'log'/'bbduk'/'{sample}.log'),
+    conda:
+        "../envs/bbtools.yml"
     threads: 8
     shell:
         """
@@ -103,6 +106,9 @@ rule entropy_filter_paired:
     log:
         str(QC_FP/'log'/'bbduk'/'{sample}.log'),
     threads: 8
+    resources:
+        mem_gb=4,
+        walltime_hr=2
     shell:
         """
         bbduk.sh -Xmx1028m in={input.r1} in2={input.r2} \
@@ -120,9 +126,13 @@ rule align_to_host_unpaired:
         str(QC_FP/'03_decontam'/'ids'/'{host}'/'{sample}')
     conda:
         "../envs/decontam.yml"
-    threads: 8
     params:
         index_fp = str(Cfg['qc']['host_fp'])
+    threads: 8
+    resources:
+        mem_gb=4,
+        disk=10,
+        walltime_hr=2
     shell:
         """
         ## turn off bash strict mode
@@ -195,6 +205,9 @@ rule filter_host_reads:
         r2 = str(QC_FP/'03_decontam'/'{sample}_2.fastq.gz')
     conda:
         "../envs/decontam.yml"
+    resources:
+        mem_gb=2,
+        walltime_hr=1
     shell:
         """
         seqkit grep -v -f {input.ids} {input.r1} -o {output.r1}

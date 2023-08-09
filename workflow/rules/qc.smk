@@ -54,6 +54,8 @@ rule trimmomatic_paired:
         pair_r2 = str(QC_FP/'01_trimmomatic'/'{sample}_2.fastq.gz'),
         unpair_r1 = temp(str(QC_FP/'01_trimmomatic'/'unpaired'/'{sample}_1_unpaired.fastq.gz')),
         unpair_r2 = temp(str(QC_FP/'01_trimmomatic'/'unpaired'/'{sample}_2_unpaired.fastq.gz'))
+    conda:
+        "../envs/bbtools.yml"
     log:
         str(QC_FP/'log'/'trimmomatic'/'{sample}.out'),
     params:
@@ -96,6 +98,8 @@ rule entropy_filter_paired:
     output:
         r1 = str(QC_FP/'02_bbduk'/'{sample}_1.fastq.gz'),
         r2 = str(QC_FP/'02_bbduk'/'{sample}_2.fastq.gz'),
+    conda:
+        "../envs/bbtools.yml"
     log:
         str(QC_FP/'log'/'bbduk'/'{sample}.log'),
     threads: 8

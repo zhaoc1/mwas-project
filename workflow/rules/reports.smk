@@ -3,12 +3,6 @@ import pandas
 from collections import OrderedDict
 
 
-# FastQC reports
-TARGET_FASTQC = expand(
-    str(QC_FP/'reports'/'{sample}_{rp}_fastqc'/'fastqc_data.txt'),
-    sample=Samples.keys(), rp=Pairs)
-
-
 TARGET_REPORT = [
     str(QC_FP/'reports'/'preprocess_summary.tsv'),
     str(QC_FP/'reports'/'fastqc_quality.tsv')
@@ -20,20 +14,6 @@ rule all_reports:
         TARGET_REPORT
 
 
-rule run_fastqc:
-    input:
-        reads = expand(str(QC_FP/"03_decontam"/"{{sample}}_{rp}.fastq.gz"), rp=Pairs)
-    output:
-        expand(str(QC_FP/'04_fastqc'/'{{sample}}_{rp}_fastqc/fastqc_data.txt'), rp=Pairs)
-    conda:
-        "../envs/qc.yml"
-    log: str(QC_FP/'log'/'fastqc'/'{sample}.log'),
-    params:
-        outdir = str(QC_FP/'04_fastqc')
-    shell:
-        "fastqc -o {params.outdir} {input.reads} -extract 2>&1 | tee {log}"
-
-
 rule fastqc_report:
     """ make fastqc reports """
     input:
@@ -42,6 +22,8 @@ rule fastqc_report:
             sample=Samples.keys(),rp=Pairs)
     output:
         str(QC_FP/'reports'/'fastqc_quality.tsv')
+    group:
+        "report"
     script:
         "../scripts/fastqc_report.py"
 
@@ -54,6 +36,8 @@ rule per_host_reads:
         str(QC_FP/'log'/'decontam'/'{host}_counts.tsv')
     params:
         decontam_fp = str(QC_FP/'03_decontam'/'ids'/'{host}')
+    group:
+        "report"
     shell:
         """
         set +o pipefail
@@ -70,6 +54,8 @@ rule total_host_reads:
         str(QC_FP/'log'/'decontam'/'host_counts.tsv')
     params:
         hostids_fp = str(QC_FP/'03_decontam'/'hostreads')
+    group:
+        "report"
     shell:
         """
         set +o pipefail
@@ -93,5 +79,7 @@ rule preprocess_report:
             column=list(HostGenomes.keys())+['host'])
     output:
         str(QC_FP/'reports'/'preprocess_summary.tsv')
+    group:
+        "report"
     script:
         "../scripts/preprocess_report.py"

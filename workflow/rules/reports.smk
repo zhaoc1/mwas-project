@@ -9,6 +9,10 @@ TARGET_REPORT = [
 ]
 
 
+TARGET_FASTQC = expand(
+    str(QC_FP/'reports'/'{sample}_{rp}_fastqc'/'fastqc_data.txt'),
+    sample=Samples.keys(), rp=Pairs)
+
 rule all_reports:
     input:
         TARGET_REPORT

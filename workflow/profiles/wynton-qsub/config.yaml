@@ -7,10 +7,10 @@ keep-going: true
 printshellcmds: true
 resources: 'network_connections=3'
 default-resources:
-  - 'mem_gb=8'
-  - 'disk=10'
-  - 'walltime_hr=1'
-  - 'walltime_min=00'
+  - 'mem_mb=4096'
+  - 'disk=8'
+  - 'walltime_hr=00'
+  - 'walltime_min=30'
   - 'walltime_sec=00'
   - 'outdir="log/"'
 use-conda: true
@@ -18,9 +18,9 @@ conda-frontend: 'conda'
 use-singularity: false
 jobscript: 'profiles/wynton-qsub/jobscript.sh'
 cluster: "qsub -cwd \
-        -v PATH \
+        -V \
         -pe smp {threads} \
-        -l mem_free={resources.mem_gb}G \
+        -l mem_free={resources.mem_mb}M \
         -l arch=lx-amd64 \
         -l scratch={resources.disk}G \
         -l h_rt={resources.walltime_hr}:{resources.walltime_min}:{resources.walltime_sec} \

@@ -10,9 +10,6 @@ TARGET_CLEAN = expand(
     str(QC_FP/'03_decontam'/'{sample}_{rp}.fastq.gz'),
     sample = Samples.keys(), rp = Pairs)
 
-TARGET_FASTQC = expand(
-    str(QC_FP/'reports'/'{sample}_{rp}_fastqc'/'fastqc_data.txt'),
-    sample=Samples.keys(), rp=Pairs)
 
 rule all_qc:
     """Runs trimmomatic and fastqc on all input files."""

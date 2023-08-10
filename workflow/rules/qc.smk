@@ -242,7 +242,7 @@ rule run_fastqc:
     log:
         str(QC_FP/'log'/'fastqc'/'{sample}.log'),
     resources:
-        mem_mb=4096,
+        mem_mb=8192,
         walltime_hr=2
     params:
         outdir = str(QC_FP/'04_fastqc')

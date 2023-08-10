@@ -135,7 +135,7 @@ rule align_to_host_unpaired:
     params:
         index_fp = str(Cfg['qc']['host_fp'])
     log:
-        str(QC_FP/'log'/'align'/'{sample}.log'),
+        str(QC_FP/'log'/'align'/'{host}'/'{sample}.log'),
     threads: 8
     resources:
         mem_mb=lambda wildcards: 60000 if wildcards.host == 'chm13v2.0' else 8000,
@@ -163,7 +163,7 @@ rule align_to_host_paired:
     conda:
         "../envs/decontam.yml"
     log:
-        str(QC_FP/'log'/'align'/'{sample}.log'),
+        str(QC_FP/'log'/'align'/'{host}'/'{sample}.log'),
     threads: 8
     resources:
         mem_mb=lambda wildcards: 60000 if wildcards.host == 'chm13v2.0' else 8000,

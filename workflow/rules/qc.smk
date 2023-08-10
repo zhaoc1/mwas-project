@@ -136,7 +136,7 @@ rule align_to_host_unpaired:
         index_fp = str(Cfg['qc']['host_fp'])
     threads: 8
     resources:
-        mem_mb=160000,
+        mem_mb=lambda wildcards: 400000 if wildcards.host == 'chm13v2.0' else 80000,
         disk=20,
         walltime_hr=4
     shell:
@@ -162,9 +162,9 @@ rule align_to_host_paired:
         "../envs/decontam.yml"
     threads: 8
     resources:
-        mem_mb=8,
-        disk=10,
-        walltime_hr=4
+        mem_mb=lambda wildcards: 400000 if wildcards.host == 'chm13v2.0' else 80000,
+        disk=20,
+        walltime_hr=8
     params:
         index_fp = str(Cfg['qc']['host_fp'])
     shell:

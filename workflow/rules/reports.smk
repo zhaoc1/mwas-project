@@ -85,5 +85,7 @@ rule preprocess_report:
         str(QC_FP/'reports'/'preprocess_summary.tsv')
     group:
         "report"
+    resources:
+        walltime_hr=1
     script:
         "../scripts/preprocess_report.py"

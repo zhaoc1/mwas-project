@@ -134,6 +134,8 @@ rule align_to_host_unpaired:
         "../envs/decontam.yml"
     params:
         index_fp = str(Cfg['qc']['host_fp'])
+    log:
+        str(QC_FP/'log'/'decontam'/'{sample}.log'),
     threads: 8
     resources:
         mem_mb=lambda wildcards: 60000 if wildcards.host == 'chm13v2.0' else 8000,
@@ -147,7 +149,7 @@ rule align_to_host_unpaired:
         bowtie2 --no-unal --local --very-sensitive-local \
         -X 500.0 -x {params.index_fp}/{wildcards.host} \
         --threads {threads} -q -U {input.r1} | \
-        samtools view --threads {threads} -S - | awk '{{print $1}}' | sort | uniq > {output}
+        samtools view --threads {threads} -S - | awk '{{print $1}}' | sort | uniq > {output} 2> {log}
         """
 
 
@@ -160,6 +162,8 @@ rule align_to_host_paired:
         str(QC_FP/'03_decontam'/'ids'/'{host}'/'{sample}')
     conda:
         "../envs/decontam.yml"
+    log:
+        str(QC_FP/'log'/'decontam'/'{sample}.log'),
     threads: 8
     resources:
         mem_mb=lambda wildcards: 60000 if wildcards.host == 'chm13v2.0' else 8000,
@@ -175,7 +179,7 @@ rule align_to_host_paired:
         bowtie2 --no-unal --local --very-sensitive-local \
         -X 500.0 -x {params.index_fp}/{wildcards.host} \
         --threads {threads} -q -1 {input.r1} -2 {input.r2} |
-        samtools view --threads {threads} -S - | awk '{{print $1}}' | sort | uniq > {output}
+        samtools view --threads {threads} -S - | awk '{{print $1}}' | sort | uniq > {output} 2> {log}
         """
 
 

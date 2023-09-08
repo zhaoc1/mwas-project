@@ -26,9 +26,5 @@ all:
 # Quality control
 qc:
   suffix: qc
-  # Trimmomatic
   adapter_name: "NexteraPE"
-  # Decontaminate
   host_fp: "/pollard/data/projects/czhao/2023-08-01-QC/hosts"
-  # Komplexity
-  kz_threshold: 0.55

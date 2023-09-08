@@ -7,8 +7,6 @@ import collections.abc
 from pathlib import Path
 from Bio import SeqIO
 
-#from pkg_resources import resource_stream
-#import ruamel.yaml
 
 def load_sample_list(samplelist_fp, paired_end, root_proj = ''):
     """
@@ -100,7 +98,10 @@ def validate_config(cfg):
     # Iteratively check paths for each subsection
     new_cfg = dict()
     for section, values in cfg.items():
-        new_cfg[section] = validate_paths(values, root)
+        if isinstance(values, dict):
+            new_cfg[section] = validate_paths(values, root)
+        else:
+            new_cfg[section] = values
     new_cfg['all']['root'] = root
     return new_cfg
 

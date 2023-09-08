@@ -1,4 +1,4 @@
-name: qc-base
+name: snakemake-qc
 channels:
   - bioconda
   - conda-forge

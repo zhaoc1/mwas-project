@@ -50,9 +50,6 @@ ADAPTERS_DICT = {
             "TruSeq3-SE": "TruSeq3-SE.fa"}
 ADAPTER_FASTA = ADAPTERS_DICT[Cfg['qc']['adapter_name']]
 
-# Change your workdir to output_fp
-# workdir: str(Cfg['all']['output_fp'])
-
 # Set up output paths for the various steps
 QC_FP = output_subdir(Cfg, 'qc')
 

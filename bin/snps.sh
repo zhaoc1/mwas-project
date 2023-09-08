@@ -11,12 +11,21 @@
 #$ -l arch=lx-amd64                 #-- SGE resources (CPU type)
 #$ -l scratch=30G                   #-- SGE resources (home and scratch disks)
 #$ -l h_rt=12:00:00                #-- runtime limit (see above; this requests 24 hours)
+<<<<<<< HEAD
 #$ -t 35-35                        #-- Array job: submit XX jobs to the job queues at once.
 #$ -tc 1                         #-- specify the maximum number of concurrent tasks
 
 
 module load CBI miniconda3/23.3.1-0-py39
 conda activate midas2v1.1.0
+=======
+#$ -t 1-35                        #-- Array job: submit XX jobs to the job queues at once.
+#$ -tc 35                         #-- specify the maximum number of concurrent tasks
+
+
+module load CBI miniconda3/23.3.1-0-py39
+conda activate midas2v1.09
+>>>>>>> 9f9509dded84e964c60dee9f7d6aa510dbd0e269
 
 JB_LAB=sample_${SGE_TASK_ID}
 TREADS=${NSLOTS:-1}
@@ -72,7 +81,10 @@ do
     --select_threshold=2,0.5 \
     --fragment_length 550 --fragment_ratio 3 \
     --paired_only --ignore_ambiguous --advanced \
+<<<<<<< HEAD
     --debug \
+=======
+>>>>>>> 9f9509dded84e964c60dee9f7d6aa510dbd0e269
     ${OUTDIR} &> ${OUTDIR}/${sample_name}/snps_time.log
 
   cp -r ${OUTDIR}/${sample_name} ${midas2_dir}

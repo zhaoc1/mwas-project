@@ -200,7 +200,7 @@ rule gather_host_ids:
 rule filter_host_reads_unpaired:
     input:
         ids = str(QC_FP/'03_decontam'/'hostreads'/'{sample}'),
-        r1 = str(QC_FP/'01_trimmomatic'/'{sample}_1.fastq.gz'),
+        r1 = str(QC_FP/'02_bbduk'/'{sample}_1.fastq.gz'),
     output:
         r1 = str(QC_FP/'03_decontam'/'{sample}_1.fastq.gz'),
     conda:
@@ -218,8 +218,8 @@ rule filter_host_reads_unpaired:
 rule filter_host_reads:
     input:
         ids = str(QC_FP/'03_decontam'/'hostreads'/'{sample}'),
-        r1 = str(QC_FP/'01_trimmomatic'/'{sample}_1.fastq.gz'),
-        r2 = str(QC_FP/'01_trimmomatic'/'{sample}_2.fastq.gz'),
+        r1 = str(QC_FP/'02_bbduk'/'{sample}_1.fastq.gz'),
+        r2 = str(QC_FP/'02_bbduk'/'{sample}_2.fastq.gz'),
     output:
         r1 = str(QC_FP/'03_decontam'/'{sample}_1.fastq.gz'),
         r2 = str(QC_FP/'03_decontam'/'{sample}_2.fastq.gz')
